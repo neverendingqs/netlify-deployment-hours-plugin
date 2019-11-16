@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/neverendingqs/netlify-deployment-hours-plugin/issues"
   },
-  "homepage": "https://github.com/neverendingqs/netlify-deployment-hours-plugin#readme"
+  "homepage": "https://github.com/neverendingqs/netlify-deployment-hours-plugin#readme",
+  "dependencies": {
+    "cron-allowed-range": "0.0.11"
+  }
 }
