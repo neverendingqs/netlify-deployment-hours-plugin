@@ -9,7 +9,7 @@ module.exports = {
     const cr = new CronAllowedRange(expression, timezone);
     const now = new Date();
 
-    console.log(`Current time: '${now}'. Expression: ${expression}. Timezone: ${timezone}.`);
+    console.log(`Current time: '${now}'. Expression: '${expression}'. Timezone: '${timezone}'.`);
 
     if(!cr.isDateAllowed(now)) {
       throw new Error('Deployment not allowed at this time.');
