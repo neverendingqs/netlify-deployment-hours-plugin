@@ -1,6 +1,6 @@
 {
   "name": "netlify-deployment-hours-plugin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Block deployment if outside of deployment hours.",
   "main": "index.js",
   "scripts": {

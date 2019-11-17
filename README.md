@@ -1,3 +1,7 @@
+[![CircleCI](https://circleci.com/gh/neverendingqs/netlify-deployment-hours-plugin.svg?style=svg)](https://circleci.com/gh/neverendingqs/netlify-deployment-hours-plugin)
+[![npm
+version](https://badge.fury.io/js/netlify-deployment-hours-plugin.svg)](https://badge.fury.io/js/netlify-deployment-hours-plugin)
+
 # netlify-deployment-hours-plugin
 
 A Netlify build plugin that blocks deployment if it outside of deployment hours.
