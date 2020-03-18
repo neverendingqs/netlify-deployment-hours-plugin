@@ -8,18 +8,14 @@ A Netlify build plugin that blocks deployment if it outside of deployment hours.
 
 ## Usage
 
-Run
+To install, add the following lines to your `netlify.toml` file:
 
-```sh
-npm i -D netlify-deployment-hours-plugin
+```toml
+[[plugins]]
+package = "netlify-deployment-hours-plugin"
 ```
 
-Then add the following to your `netlify.yml` file:
-
-```yml
-plugins:
-  - type: netlify-deployment-hours-plugin
-```
+Note: The `[[plugins]]` line is required for each plugin, even if you have other plugins in your `netlify.toml` file already.
 
 There are two environment variable used to configure this plugin:
 
