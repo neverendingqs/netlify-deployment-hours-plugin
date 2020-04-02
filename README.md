@@ -4,7 +4,7 @@ version](https://badge.fury.io/js/netlify-deployment-hours-plugin.svg)](https://
 
 # netlify-deployment-hours-plugin
 
-A Netlify build plugin that blocks deployment if it outside of deployment hours.
+A Netlify build plugin that blocks deployment if it is outside of deployment hours.
 
 ## Usage
 
