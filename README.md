@@ -17,12 +17,18 @@ package = "netlify-deployment-hours-plugin"
 
 Note: The `[[plugins]]` line is required for each plugin, even if you have other plugins in your `netlify.toml` file already.
 
-There are two environment variable used to configure this plugin:
+There are two `inputs` used to configure this plugin:
 
-* `DEPLOYMENT_HOURS_EXPRESSION`
-  * A cron-like expression that expresses when a deployment can occur
-* `DEPLOYMENT_HOURS_TIMEZONE`
-  * tz database value that expresses the timezone of the expression
+```toml
+[[plugins]]
+package = "netlify-deployment-hours-plugin"
+
+  [plugins.inputs]
+  # A cron-like expression that expresses when a deployment can occur
+  expression = "* * * * *"
+  # tz database value that expresses the timezone of the expression
+  timezone = "America/Toronto"
+```
 
 Both are passed into
 [cron-allowed-range](https://github.com/neverendingqs/cron-allowed-range) to
