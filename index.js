@@ -1,17 +1,21 @@
 const CronAllowedRange = require('cron-allowed-range');
-
-module.exports = function(config) {
-  return {
-    name: 'deployment-hours',
-    onInit: ({ utils, inputs: { expression, timezone } }) => {
-      const cr = new CronAllowedRange(expression, timezone);
+module.exports = {
+    onPreBuild: ({ utils, inputs: { expression, timezone } }) => {
+      const cr = getCronAllowedRange(expression, timezone, utils);
       const now = new Date();
 
       console.log(`Current time: '${now}'. Expression: '${expression}'. Timezone: '${timezone}'.`);
 
       if(!cr.isDateAllowed(now)) {
-        utils.build.failBuild('Deployment not allowed at this time.');
+        utils.build.cancelBuild('Deployment not allowed at this time.');
       }
     }
+};
+
+const getCronAllowedRange = function(expression, timezone, utils) {
+  try {
+    return new CronAllowedRange(expression, timezone);
+  } catch (error) {
+    utils.build.failPlugin('Invalid Cron expression or timezone', { error })
   }
 };
