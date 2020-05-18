@@ -1,7 +1,6 @@
 const CronAllowedRange = require('cron-allowed-range');
 
-module.exports = function(config) {
-  return {
+module.exports = {
     name: 'deployment-hours',
     onInit: ({ utils }) => {
       const expression = process.env.DEPLOYMENT_HOURS_EXPRESSION || '* * * * *';
@@ -16,5 +15,4 @@ module.exports = function(config) {
         utils.build.failBuild('Deployment not allowed at this time.');
       }
     }
-  }
 };
