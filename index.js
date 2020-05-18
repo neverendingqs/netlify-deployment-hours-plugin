@@ -1,6 +1,10 @@
 const CronAllowedRange = require('cron-allowed-range');
+
 module.exports = {
-    onPreBuild: ({ utils, inputs: { expression, timezone } }) => {
+    onPreBuild: ({ utils, inputs }) => {
+      const expression = inputs.env || process.env.DEPLOYMENT_HOURS_EXPRESSION || '* * * * *';
+      const timezone = inputs.env || process.env.DEPLOYMENT_HOURS_TIMEZONE || 'America/Toronto';
+
       const cr = getCronAllowedRange(expression, timezone, utils);
       const now = new Date();
 

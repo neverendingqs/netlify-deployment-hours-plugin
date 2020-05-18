@@ -1,8 +1,6 @@
 name: netlify-deployment-hours-plugin
 inputs:
   - name: expression
-    default: '* * * * *'
     description: A cron-like expression that expresses when a deployment can occur
   - name: timezone
-    default: America/Toronto
     description: tz database value that expresses the timezone of the expression
