@@ -13,7 +13,7 @@ module.exports = function(config) {
       console.log(`Current time: '${now}'. Expression: '${expression}'. Timezone: '${timezone}'.`);
 
       if(!cr.isDateAllowed(now)) {
-        utils.build.failBuild('Deployment not allowed at this time.');
+        utils.build.cancelBuild('Deployment not allowed at this time.');
       }
     }
   }
