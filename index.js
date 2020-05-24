@@ -1,9 +1,35 @@
 const CronAllowedRange = require('cron-allowed-range');
 
+function getConfigValue({ configName, defaultValue, env, input }) {
+  if(env) {
+    console.log(`Using '${configName}=${env}' (from environment variable)`);
+    return env;
+  }
+
+  if(input) {
+    console.log(`Using '${configName}=${input}' (from manifest file)`);
+    return input;
+  }
+
+  console.log(`Using '${configName}=${defaultValue}' (default value)`);
+  return defaultValue;
+}
+
 module.exports = {
-    onPreBuild: ({ utils }) => {
-      const expression = process.env.DEPLOYMENT_HOURS_EXPRESSION || '* * * * *';
-      const timezone = process.env.DEPLOYMENT_HOURS_TIMEZONE || 'America/Toronto';
+    onPreBuild: ({ utils, inputs }) => {
+      const expression = getConfigValue({
+        configName: 'expression',
+        defaultValue: '* * * * *',
+        env: process.env.DEPLOYMENT_HOURS_EXPRESSION,
+        input: inputs.expression
+      });
+
+      const timezone = getConfigValue({
+        configName: 'timezone',
+        defaultValue: 'America/Toronto',
+        env: process.env.DEPLOYMENT_HOURS_TIMEZONE,
+        input: inputs.timezone
+      });
 
       const cr = getCronAllowedRange(expression, timezone, utils);
       const now = new Date();

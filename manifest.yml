@@ -1,1 +1,6 @@
 name: netlify-deployment-hours-plugin
+inputs:
+  - name: expression
+    description: A cron-like expression that expresses when a deployment can occur. Can be overridden with environment variable DEPLOYMENT_HOURS_EXPRESSION.
+  - name: timezone
+    description: tz database value that expresses the timezone of the expression. Can be overriden with environment variable DEPLOYMENT_HOURS_TIMEZONE.
