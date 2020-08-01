@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/neverendingqs/netlify-deployment-hours-plugin#readme",
   "dependencies": {
-    "cron-allowed-range": "0.0.13"
+    "cron-allowed-range": "0.0.17"
   },
   "devDependencies": {
     "publish-me-maybe": "^1.0.2"
