@@ -30,6 +30,8 @@ package = "netlify-deployment-hours-plugin"
   expression = "* * * * *"
   # tz database value that expresses the timezone of the expression
   timezone = "America/Toronto"
+  # True or false value to indicate if the restrictions should apply to production deploys or all deploys
+  productionOnly = false
 ```
 
 Both are passed into
@@ -44,4 +46,5 @@ emergency deploys were required outside of regular deployment hours:
 ```
 * `DEPLOYMENT_HOURS_EXPRESSION`
 * `DEPLOYMENT_HOURS_TIMEZONE`
+* `DEPLOYMENT_HOURS_PRODUCTION_ONLY`
 ```

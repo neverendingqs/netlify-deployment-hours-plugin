@@ -17,28 +17,39 @@ function getConfigValue({ configName, defaultValue, env, input }) {
 
 module.exports = {
     onPreBuild: ({ utils, inputs }) => {
-      const expression = getConfigValue({
-        configName: 'expression',
-        defaultValue: '* * * * *',
-        env: process.env.DEPLOYMENT_HOURS_EXPRESSION,
-        input: inputs.expression
+
+      const productionOnly = getConfigValue({
+        configName: 'productionOnly',
+        defaultValue: false,
+        env: process.env.DEPLOYMENT_HOURS_PRODUCTION_ONLY,
+        input: inputs.productionOnly
       });
 
-      const timezone = getConfigValue({
-        configName: 'timezone',
-        defaultValue: 'America/Toronto',
-        env: process.env.DEPLOYMENT_HOURS_TIMEZONE,
-        input: inputs.timezone
-      });
+      if(productionOnly === false || (productionOnly === true && process.env.CONTEXT === 'production')){
+        const expression = getConfigValue({
+          configName: 'expression',
+          defaultValue: '* * * * *',
+          env: process.env.DEPLOYMENT_HOURS_EXPRESSION,
+          input: inputs.expression
+        });
 
-      const cr = getCronAllowedRange(expression, timezone, utils);
-      const now = new Date();
+        const timezone = getConfigValue({
+          configName: 'timezone',
+          defaultValue: 'America/Toronto',
+          env: process.env.DEPLOYMENT_HOURS_TIMEZONE,
+          input: inputs.timezone
+        });
 
-      console.log(`Current time: '${now}'. Expression: '${expression}'. Timezone: '${timezone}'.`);
+        const cr = getCronAllowedRange(expression, timezone, utils);
+        const now = new Date();
 
-      if(!cr.isDateAllowed(now)) {
-        utils.build.cancelBuild('Deployment not allowed at this time.');
+        console.log(`Current time: '${now}'. Expression: '${expression}'. Timezone: '${timezone}'.`);
+
+        if(!cr.isDateAllowed(now)) {
+          utils.build.cancelBuild('Deployment not allowed at this time.');
+        }
       }
+
     }
 };
 

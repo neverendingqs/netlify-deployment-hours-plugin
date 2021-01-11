@@ -4,3 +4,5 @@ inputs:
     description: A cron-like expression that expresses when a deployment can occur. Can be overridden with environment variable DEPLOYMENT_HOURS_EXPRESSION.
   - name: timezone
     description: tz database value that expresses the timezone of the expression. Can be overriden with environment variable DEPLOYMENT_HOURS_TIMEZONE.
+  - name: productionOnly
+    description: True or false to indicate if the restrictions should apply to production deploys or all deploys. Can be overriden with environment variable DEPLOYMENT_HOURS_PRODUCTION_ONLY.
