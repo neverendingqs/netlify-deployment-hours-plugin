@@ -5,8 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "deploy": "publish",
+    "lint": "eslint --ignore-pattern .gitignore **/*.js",
     "test": "nyc --reporter=html --reporter=text mocha --recursive test/",
-    "test:coverage": "nyc report --reporter=text-lcov | coveralls"
+    "test:coverage": "nyc report --reporter=text-lcov | coveralls",
+    "posttest": "npm run lint"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,8 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "coveralls": "^3.1.0",
+    "eslint": "^7.19.0",
+    "eslint-plugin-mocha": "^8.0.0",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
     "proxyquire": "^2.1.3",
