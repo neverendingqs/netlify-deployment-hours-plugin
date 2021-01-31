@@ -1,19 +1,5 @@
-const CronAllowedRange = require('cron-allowed-range');
-
-function getConfigValue({ configName, defaultValue, env, input }) {
-  if(env) {
-    console.log(`Using '${configName}=${env}' (from environment variable)`);
-    return env;
-  }
-
-  if(input) {
-    console.log(`Using '${configName}=${input}' (from manifest file)`);
-    return input;
-  }
-
-  console.log(`Using '${configName}=${defaultValue}' (default value)`);
-  return defaultValue;
-}
+const createCronAllowedRange = require('./lib/cron-allowed-range');
+const getConfigValue = require('./lib/get-config-value');
 
 module.exports = {
     onPreBuild: ({ utils, inputs }) => {
@@ -31,7 +17,14 @@ module.exports = {
         input: inputs.timezone
       });
 
-      const cr = getCronAllowedRange(expression, timezone, utils);
+      let cr;
+      try {
+        cr = createCronAllowedRange(expression, timezone);
+      } catch (error) {
+        utils.build.failPlugin('Invalid Cron expression or timezone', { error });
+        return;
+      }
+
       const now = new Date();
 
       console.log(`Current time: '${now}'. Expression: '${expression}'. Timezone: '${timezone}'.`);
@@ -40,12 +33,4 @@ module.exports = {
         utils.build.cancelBuild('Deployment not allowed at this time.');
       }
     }
-};
-
-const getCronAllowedRange = function(expression, timezone, utils) {
-  try {
-    return new CronAllowedRange(expression, timezone);
-  } catch (error) {
-    utils.build.failPlugin('Invalid Cron expression or timezone', { error })
-  }
 };
