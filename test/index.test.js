@@ -67,10 +67,15 @@ describe('index', function() {
 
       this.utils = {
         build: {
+          cancelBuild: this.sandbox.stub(),
           failPlugin: this.sandbox.stub()
         }
       };
       this.onPreBuild = () => onPreBuild({ inputs, utils: this.utils });
+
+      this.cr = {
+        isDateAllowed: this.sandbox.stub()
+      };
     });
 
     it('fails build when CronAllowedRange throws an exception', function() {
@@ -83,7 +88,35 @@ describe('index', function() {
       this.onPreBuild();
 
       expect(this.utils.build.failPlugin)
-        .to.have.been.called;//calledWith('Invalid Cron expression or timezone', { error });
+        .to.have.been.calledWith('Invalid Cron expression or timezone', { error });
+    });
+
+    it('cancels build if deployment is not allowed', function() {
+      this.createCronAllowedRange
+        .withArgs(this.config.expression, this.config.timezone)
+        .returns(this.cr);
+
+      this.cr.isDateAllowed
+        .returns(false);
+
+      this.onPreBuild();
+
+      expect(this.utils.build.cancelBuild)
+        .to.have.been.calledWith('Deployment not allowed at this time.');
+    });
+
+    it('cancels build if deployment is allowed', function() {
+      this.createCronAllowedRange
+        .withArgs(this.config.expression, this.config.timezone)
+        .returns(this.cr);
+
+      this.cr.isDateAllowed
+        .returns(true);
+
+      this.onPreBuild();
+
+      expect(this.utils.build.cancelBuild)
+        .to.not.have.been.called;
     });
   });
 });
