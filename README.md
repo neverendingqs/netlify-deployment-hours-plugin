@@ -1,6 +1,7 @@
 [![CircleCI](https://circleci.com/gh/neverendingqs/netlify-deployment-hours-plugin.svg?style=svg)](https://circleci.com/gh/neverendingqs/netlify-deployment-hours-plugin)
 [![npm
 version](https://badge.fury.io/js/netlify-deployment-hours-plugin.svg)](https://badge.fury.io/js/netlify-deployment-hours-plugin)
+[![Coverage Status](https://coveralls.io/repos/github/neverendingqs/netlify-deployment-hours-plugin/badge.svg?branch=master)](https://coveralls.io/github/neverendingqs/netlify-deployment-hours-plugin?branch=master)
 
 # netlify-deployment-hours-plugin
 
