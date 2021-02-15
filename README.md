@@ -20,13 +20,15 @@ package = "netlify-deployment-hours-plugin"
 Note: The `[[plugins]]` line is required for each plugin, even if you have other
 plugins in your `netlify.toml` file already.
 
-There are two `inputs` used to configure this plugin:
+There are two `inputs` required to configure this plugin:
 
 ```toml
 [[plugins]]
 package = "netlify-deployment-hours-plugin"
 
   [plugins.inputs]
+  # Optional: a comma-separated list of deploy contexts this plugin should monitor (default: "production")
+  contexts = "production"   # default value
   # A cron-like expression that expresses when a deployment can occur
   expression = "* * * * *"
   # tz database value that expresses the timezone of the expression
@@ -39,8 +41,8 @@ determine if a deployment should proceed. See the [`cron-allowed-range`
 documentation](https://github.com/neverendingqs/cron-allowed-range) for more
 details on how to form the cron-like expression.
 
-The `inputs` can be overridden with environment variables for scenarios where
-emergency deploys were required outside of regular deployment hours:
+The required `inputs` can be overridden with environment variables for scenarios
+where emergency deploys were required outside of regular deployment hours:
 
 ```
 * `DEPLOYMENT_HOURS_EXPRESSION`

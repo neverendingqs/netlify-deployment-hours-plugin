@@ -3,6 +3,18 @@ const getConfigValue = require('./lib/get-config-value');
 
 module.exports = {
   onPreBuild: ({ utils, inputs }) => {
+    const contextsCsv = getConfigValue({
+      configName: 'contexts',
+      defaultValue: 'production',
+      input: inputs.contexts
+    });
+
+    const contexts = contextsCsv.split(',');
+
+    if(!contexts.includes(process.env.CONTEXT)) {
+      return;
+    }
+
     const expression = getConfigValue({
       configName: 'expression',
       defaultValue: '* * * * *',

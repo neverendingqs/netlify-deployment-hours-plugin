@@ -9,6 +9,7 @@ chai.use(require('sinon-chai'));
 describe('index', function() {
   before(function() {
     // crude workaround for https://github.com/sinonjs/sinon/issues/1720
+    process.env.CONTEXT = process.env.CONTEXT || '';
     process.env.DEPLOYMENT_HOURS_EXPRESSION = process.env.DEPLOYMENT_HOURS_EXPRESSION || '';
     process.env.DEPLOYMENT_HOURS_TIMEZONE = process.env.DEPLOYMENT_HOURS_TIMEZONE || '';
   });
@@ -24,11 +25,9 @@ describe('index', function() {
   describe('onPreBuild()', function() {
     beforeEach(function() {
       this.createCronAllowedRange = this.sandbox.stub();
-      const getConfigValue = this.sandbox.stub();
 
       const { onPreBuild } = proxyquire('../src', {
-        './lib/cron-allowed-range': this.createCronAllowedRange,
-        './lib/get-config-value': getConfigValue
+        './lib/cron-allowed-range': this.createCronAllowedRange
       });
 
       this.config = {
@@ -36,34 +35,20 @@ describe('index', function() {
         timezone: 'America/Toronto'
       };
 
+      this.sandbox.stub(process.env, 'CONTEXT')
+        .value('production');
+
       this.sandbox.stub(process.env, 'DEPLOYMENT_HOURS_EXPRESSION')
         .value(this.config.expression);
 
       this.sandbox.stub(process.env, 'DEPLOYMENT_HOURS_TIMEZONE')
         .value(this.config.timezone);
 
-      const inputs = {
+      this.inputs = {
+        contexts: 'production',
         expression: '* * * * 1',
         timezone: 'Africa/Abidjan'
       };
-
-      getConfigValue
-        .withArgs({
-          configName: 'expression',
-          defaultValue: '* * * * *',
-          env: this.config.expression,
-          input: inputs.expression
-        })
-        .returns(this.config.expression);
-
-      getConfigValue
-        .withArgs({
-          configName: 'timezone',
-          defaultValue: 'America/Toronto',
-          env: this.config.timezone,
-          input: inputs.timezone
-        })
-        .returns(this.config.timezone);
 
       this.utils = {
         build: {
@@ -71,7 +56,7 @@ describe('index', function() {
           failPlugin: this.sandbox.stub()
         }
       };
-      this.onPreBuild = () => onPreBuild({ inputs, utils: this.utils });
+      this.onPreBuild = () => onPreBuild({ inputs: this.inputs, utils: this.utils });
 
       this.cr = {
         isDateAllowed: this.sandbox.stub()
@@ -105,7 +90,7 @@ describe('index', function() {
         .to.have.been.calledWith('Deployment not allowed at this time.');
     });
 
-    it('cancels build if deployment is allowed', function() {
+    it('build is successful if deployment is allowed', function() {
       this.createCronAllowedRange
         .withArgs(this.config.expression, this.config.timezone)
         .returns(this.cr);
@@ -117,6 +102,33 @@ describe('index', function() {
 
       expect(this.utils.build.cancelBuild)
         .to.not.have.been.called;
+    });
+
+    ['branch-deploy', 'staging,branch-deploy'].forEach(contexts => {
+      it(`skips schedule check if current context ('production') does not match any contexts ('${contexts})`, function() {
+        this.inputs.contexts = contexts;
+
+        this.onPreBuild();
+
+        expect(this.createCronAllowedRange)
+          .to.not.have.been.called;
+      });
+    });
+
+    it('does not skip schedule check if current context is one of many values in contexts', function() {
+      this.inputs.contexts = 'staging,production,dmz';
+
+      this.createCronAllowedRange
+        .withArgs(this.config.expression, this.config.timezone)
+        .returns(this.cr);
+
+      this.cr.isDateAllowed
+        .returns(true);
+
+      this.onPreBuild();
+
+      expect(this.createCronAllowedRange)
+        .to.have.been.called;
     });
   });
 });
