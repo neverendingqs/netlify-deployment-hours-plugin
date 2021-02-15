@@ -1,5 +1,7 @@
 name: netlify-deployment-hours-plugin
 inputs:
+  - name: contexts
+    description: 'A comma-separated list of deploy contexts this plugin should monitor. Optional (default: "production").'
   - name: expression
     description: A cron-like expression that expresses when a deployment can occur. Can be overridden with environment variable DEPLOYMENT_HOURS_EXPRESSION.
   - name: timezone
