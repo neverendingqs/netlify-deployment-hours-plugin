@@ -1,6 +1,6 @@
 {
   "name": "netlify-deployment-hours-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Block deployment if outside of deployment hours.",
   "main": "src/index.js",
   "scripts": {
@@ -26,12 +26,12 @@
   },
   "homepage": "https://github.com/neverendingqs/netlify-deployment-hours-plugin#readme",
   "dependencies": {
-    "cron-allowed-range": "0.0.30"
+    "cron-allowed-range": "0.0.31"
   },
   "devDependencies": {
     "chai": "^4.3.0",
     "coveralls": "^3.1.0",
-    "eslint": "^7.20.0",
+    "eslint": "^7.21.0",
     "eslint-plugin-mocha": "^8.0.0",
     "mocha": "^8.3.0",
     "nyc": "^15.1.0",
